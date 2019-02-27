@@ -16,7 +16,7 @@ h1 {
     width: 100%;
     background-color: #faebd7;
     border-bottom: 1px solid #fff;
-    padding: 2px 0px;
+    padding: 5px 0px;
 }
 .tr:first-child {
     background-color: teal;
@@ -28,6 +28,7 @@ h1 {
     border-right: 1px solid #fff;
     padding: 2px;
     display: inline-block;
+    min-height: 20.8px;
 }
 .tHeader:last-child, .tData:last-child {
     border-right: none;
@@ -35,7 +36,10 @@ h1 {
 .buttons {
     display: inline-block;
     border-radius: 3px;
-    padding: 1px;
+    padding: 2px;
+    width: 15%;
+    min-height: 20.8px;
+    vertical-align: top;
 }
 .update, .edit, .delete, .add {
     width: 20px;
