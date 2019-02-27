@@ -16,7 +16,7 @@ rest.page("/", function() {
 //Declaring a page that returns something from a database
 //Will be accessed on localhost:8001/query
 rest.page("/query", function() {
-    return "SELECT * FROM employees WHERE first_name LIKE 'C%'"
+    return "SELECT * FROM employees WHERE first_name LIKE 'Ca%'"
 })
 
 //Declaring a page that uses parameters
