@@ -39,5 +39,8 @@ rest.page("/insert", function(q) {
 rest.page("/file", function(q) {
     return rest.file("index.html")
 })
+rest.page("/styling.css", function(q) {
+    return rest.file("styling.css")
+})
 
 rest.start(8001) //Initialize the server
