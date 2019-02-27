@@ -76,6 +76,10 @@ let testObject = [
 $('.tab').click(function() {
     console.log('I clicked ', this.value)
 })
+
+
+
+
 $.get( "http://localhost:8001/query", function( data ) {
   $.each(data, function () {
     console.log(this);
