@@ -16,7 +16,7 @@ rest.page("/", function() {
 //Declaring a page that returns something from a database
 //Will be accessed on localhost:8001/query
 rest.page("/query", function() {
-    return "SELECT * FROM names"
+    return "SELECT * FROM employees WHERE first_name LIKE 'C%'"
 })
 
 //Declaring a page that uses parameters
@@ -42,5 +42,7 @@ rest.page("/file", function(q) {
 rest.page("/styling.css", function(q) {
     return rest.file("styling.css")
 })
-
+rest.page("/running.js", function(q) {
+    return rest.file("running.js")
+})
 rest.start(8001) //Initialize the server
