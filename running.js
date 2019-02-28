@@ -84,27 +84,17 @@ $(document).ready(function(){
        event.stopImmediatePropagation()
        //console.log('I clicked ', $(this)[0].value)
        $.get( "http://localhost:8001/query", function( data ) {
+         let temp = $.trim($('#dataRow').html())
          $.each(data, function(index, obj) {
-            var x = temp.replace(/{{birth_date}}/ig, formatDate(obj.birth_date))
-            });    
-
-        },"json");
-
-        let temp = $.trim($('#dataRow').html())
-        $.each(testObject, function(index, obj) {
             var x = temp.replace(/{{emp_no}}/ig, obj.emp_no)
-            .replace(/{{birth_date}}/ig, obj.birth_date)
+            .replace(/{{birth_date}}/ig, formatDate(obj.birth_date))
             .replace(/{{first_name}}/ig, obj.first_name)
             .replace(/{{last_name}}/ig, obj.last_name)
             .replace(/{{gender}}/ig, obj.gender)
             .replace(/{{hire_date}}/ig, formatDate(obj.hire_date));
-            $('#tBody').append(x);
-        })   
+            $('#tBody').append(x);   
+         });    
 
-       },"json");
-
-       let temp = $.trim($('#dataRow').html())
-       
-
+        },"json");
    })
 })
