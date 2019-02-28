@@ -78,7 +78,18 @@ function formatDate(date) {
    return formattedDate;
 }
 
+function addPersonQuery(b_date,f_name,l_name,gender,h_date) {
+   var finalQuery = String.raw`INSERT INTO employees
+   (birth_date,first_name,last_name,gender,hire_date) 
+   VALUES ('${b_date}''${f_name}','${l_name}','${gender}','${h_date}')`;
+   console.log(finalQuery)
+   $.get( "http://localhost:8001/insert/" + finalQuery, function( data ) {
+      console.log(data);
+   });
+}
+
 $(document).ready(function(){
+   //Show employees
    $('.tab').on('click', function(event) {
        event.stopPropagation()
        event.stopImmediatePropagation()
@@ -95,6 +106,17 @@ $(document).ready(function(){
             $('#tBody').append(x);   
          });    
 
-        },"json");
+      },"json");
+   })
+   //Add employee
+   $('.add').on('click', function(event) {
+      event.stopPropagation()
+      event.stopImmediatePropagation()
+      var b_date = $('#b_date').text();
+      var f_name = $('#f_name').text();
+      var l_name = $('#l_name').text();
+      var gender = $('#gender').text();
+      var h_date = $('#h_date').text();
+      addPersonQuery(b_date,f_name,l_name,gender,h_date)
    })
 })
