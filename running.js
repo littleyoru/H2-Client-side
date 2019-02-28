@@ -87,7 +87,8 @@ $(document).ready(function(){
 
         let temp = $.trim($('#dataRow').html())
         $.each(testObject, function(index, obj) {
-            var x = temp.replace(/{{birth_date}}/ig, obj.birth_date)
+            var x = temp.replace(/{{emp_no}}/ig, obj.emp_no)
+            .replace(/{{birth_date}}/ig, obj.birth_date)
             .replace(/{{first_name}}/ig, obj.first_name)
             .replace(/{{last_name}}/ig, obj.last_name)
             .replace(/{{gender}}/ig, obj.gender)
