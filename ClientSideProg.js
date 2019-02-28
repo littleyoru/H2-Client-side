@@ -31,8 +31,15 @@ rest.page("/parameters", function(q) {  //the parameters can be accessed through
 //DISCLAIMER no protection against injection has yet been implemented. 
 //DONT GO LIVE!!!
 rest.page("/insert", function(q) {
-    return rest.query("INSERT INTO names VALUES ('RenÃ©')")
+    return rest.query(q.query)
 })
+
+rest.page("/parameters", function(q) {  //the parameters can be accessed through the 
+    //q object
+return parseInt(q.a) + parseInt(q.b);
+})
+
+
 
 //Delaring a page that returns the contents of a file
 //Will be accessed on localhost:8001/file
