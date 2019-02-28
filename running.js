@@ -83,34 +83,38 @@ function addPersonQuery(b_date,f_name,l_name,gender,h_date) {
    $.get( "http://localhost:8001/insert?query=" + finalQuery, function( data ) {
       console.log(data);
    });
+   loadEmployees()
 }
 
 function deletePersonQuery(emp_no){
-   var finalQuery = String.raw`INSERT INTO employees (birth_date,first_name,last_name,gender,hire_date) VALUES ('${b_date}','${f_name}','${l_name}','${gender}','${h_date}')`;
+   var finalQuery = String.raw`DELETE FROM employees WHERE emp_no = ${emp_no}`;
    $.get( "http://localhost:8001/insert?query=" + finalQuery, function( data ) {
       console.log(data);
    });
 }
 
+function loadEmployees(){
+   $.get( "http://localhost:8001/query", function( data ) {
+            let temp = $.trim($('#dataRow').html())
+            $.each(data, function(index, obj) {
+               var x = temp.replace(/{{emp_no}}/ig, obj.emp_no)
+               .replace(/{{birth_date}}/ig, formatDate(obj.birth_date))
+               .replace(/{{first_name}}/ig, obj.first_name)
+               .replace(/{{last_name}}/ig, obj.last_name)
+               .replace(/{{gender}}/ig, obj.gender)
+               .replace(/{{hire_date}}/ig, formatDate(obj.hire_date));
+               $('#tBody').append(x);   
+            });    
+
+         },"json");
+   }
 $(document).ready(function(){
    //Show employees
    $('.tab').on('click', function(event) {
        event.stopPropagation()
        event.stopImmediatePropagation()
        //console.log('I clicked ', $(this)[0].value)
-       $.get( "http://localhost:8001/query", function( data ) {
-         let temp = $.trim($('#dataRow').html())
-         $.each(data, function(index, obj) {
-            var x = temp.replace(/{{emp_no}}/ig, obj.emp_no)
-            .replace(/{{birth_date}}/ig, formatDate(obj.birth_date))
-            .replace(/{{first_name}}/ig, obj.first_name)
-            .replace(/{{last_name}}/ig, obj.last_name)
-            .replace(/{{gender}}/ig, obj.gender)
-            .replace(/{{hire_date}}/ig, formatDate(obj.hire_date));
-            $('#tBody').append(x);   
-         });    
-
-      },"json");
+       loadEmployees()
    })
    //Add employee
    $('.add').on('click', function(event) {
@@ -137,7 +141,9 @@ $(document).ready(function(){
               break
           case 'X':
               let elem= $(this).parent().siblings().parent()
-              deletePersonQuery(elem.attr('index'))
+              deletePersonQuery(elem.attr('index')).then(
+                 ()=>{loadEmployees()},(err)=>{console.log(err)}
+              )
               break
           case 'U':
               break
