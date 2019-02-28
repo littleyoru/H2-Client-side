@@ -16,7 +16,7 @@ rest.page("/", function() {
 //Declaring a page that returns something from a database
 //Will be accessed on localhost:8001/query
 rest.page("/query", function() {
-    return "SELECT * FROM employees WHERE first_name LIKE 'Car%'"
+    return "SELECT * FROM employees LIMIT 50"
 })
 
 //Declaring a page that uses parameters
@@ -33,13 +33,6 @@ rest.page("/parameters", function(q) {  //the parameters can be accessed through
 rest.page("/insert", function(q) {
     return rest.query(q.query)
 })
-
-rest.page("/parameters", function(q) {  //the parameters can be accessed through the 
-    //q object
-return parseInt(q.a) + parseInt(q.b);
-})
-
-
 
 //Delaring a page that returns the contents of a file
 //Will be accessed on localhost:8001/file

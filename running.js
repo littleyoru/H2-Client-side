@@ -79,11 +79,8 @@ function formatDate(date) {
 }
 
 function addPersonQuery(b_date,f_name,l_name,gender,h_date) {
-   var finalQuery = String.raw`INSERT INTO employees
-   (birth_date,first_name,last_name,gender,hire_date) 
-   VALUES ('${b_date}''${f_name}','${l_name}','${gender}','${h_date}')`;
-   console.log(finalQuery)
-   $.get( "http://localhost:8001/insert/" + finalQuery, function( data ) {
+   var finalQuery = String.raw`INSERT INTO employees (birth_date,first_name,last_name,gender,hire_date) VALUES ('${b_date}','${f_name}','${l_name}','${gender}','${h_date}')`;
+   $.get( "http://localhost:8001/insert?query=" + finalQuery, function( data ) {
       console.log(data);
    });
 }
