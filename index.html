@@ -13,7 +13,7 @@
                 <input type='button' class='tab' value='Show Employees' />
             </div>
             <div id='table'>
-                <div class='tr'>
+                <div class='tr head'>
                         <div class='tHeader'>Birth Date</div>
                         <div class='tHeader'>First Name</div>
                         <div class='tHeader'>Last Name</div>
@@ -21,30 +21,20 @@
                         <div class='tHeader'>Hire Date</div>
                         <div class='buttons'></div>
                 </div>
-                <div class='tr'>
-                    <div class='tData'>test</div>
-                    <div class='tData'>test</div>
-                    <div class='tData'>test</div>
-                    <div class='tData'>test</div>
-                    <div class='tData'>test</div>
-                    <div class='buttons'>
-                        <input type='button' class='update' value='U' />
-                        <input type='button' class='edit' value='E' />
-                        <input type='button' class='delete' value='X' />
-                    </div>
-                </div>
-                <div class='tr'>
-                    <div class='tData'>test</div>
-                    <div class='tData'>test</div>
-                    <div class='tData'>test</div>
-                    <div class='tData'>test</div>
-                    <div class='tData'>test</div>
-                    <div class='buttons'>
-                        <input type='button' class='update' value='U' />
-                        <input type='button' class='edit' value='E' />
-                        <input type='button' class='delete' value='X' />
-                    </div>
-                </div>
+                <script id='dataRow' type='template'>
+                    <div class='tr'>
+                            <div class='tData'>{{birth_date}}</div>
+                            <div class='tData'>{{first_name}}</div>
+                            <div class='tData'>{{last_name}}</div>
+                            <div class='tData'>{{gender}}</div>
+                            <div class='tData'>{{hire_date}}</div>
+                            <div class='buttons'>
+                                <input type='button' class='update' value='U' />
+                                <input type='button' class='edit' value='E' />
+                                <input type='button' class='delete' value='X' />
+                            </div>
+                        </div>
+                </script>
                 <div class='tr'>
                     <div class='tData'></div>
                     <div class='tData'></div>

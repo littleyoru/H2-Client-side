@@ -73,9 +73,31 @@ let testObject = [
     }
 ]
 
-$('.tab').click(function() {
-    console.log('I clicked ', this.value)
+$(document).ready(function(){
+    $('.tab').on('click', function(event) {
+        event.stopPropagation()
+        event.stopImmediatePropagation()
+        //console.log('I clicked ', $(this)[0].value)
+        $.get( "http://localhost:8001/query", function( data ) {
+            $.each(data, function () {
+                console.log(this);
+            });    
+
+        },"json");
+
+        let temp = $.trim($('#dataRow').html())
+        $.each(testObject, function(index, obj) {
+            var x = temp.replace(/{{birth_date}}/ig, obj.birth_date)
+            .replace(/{{first_name}}/ig, obj.first_name)
+            .replace(/{{last_name}}/ig, obj.last_name)
+            .replace(/{{gender}}/ig, obj.gender)
+            .replace(/{{hire_date}}/ig, obj.hire_date);
+            $('.tr.head').append(x);
+        })
+
+    })
 })
+
 
 
 
