@@ -97,4 +97,28 @@ $(document).ready(function(){
 
         },"json");
    })
+
+   $('#tBody').on('click', 'input', function(event) {
+      event.stopPropagation()
+      event.stopImmediatePropagation()
+
+      console.log($(this)[0].value)
+      switch($(this)[0].value) {
+          case 'E':
+              console.log($(this).parent().siblings())
+              let siblings = $(this).parent().siblings()
+              $.each(siblings, ((index, item) => {
+                  console.log(item)
+                  $(item).attr('contenteditable', 'true')
+              }))
+              break
+          case 'X':
+              break
+          case 'U':
+              break
+          default: 
+              break
+      }
+  })
+
 })
