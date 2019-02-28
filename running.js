@@ -90,7 +90,7 @@ $(document).ready(function(){
             .replace(/{{last_name}}/ig, obj.last_name)
             .replace(/{{gender}}/ig, obj.gender)
             .replace(/{{hire_date}}/ig, formatDate(obj.hire_date));
-            $('.tr.head').append(x);
+            $('#tBody').append(x);
         })   
 
        },"json");
