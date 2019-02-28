@@ -124,17 +124,16 @@ $(document).ready(function(){
       event.stopPropagation()
       event.stopImmediatePropagation()
 
-      console.log($(this)[0].value)
       switch($(this)[0].value) {
           case 'E':
-              console.log($(this).parent().siblings())
               let siblings = $(this).parent().siblings()
               $.each(siblings, ((index, item) => {
-                  console.log(item)
                   $(item).attr('contenteditable', 'true')
               }))
               break
           case 'X':
+              let elem= $(this).parent().siblings().parent()
+              deletePersonQuery(elem.attr('index'))
               break
           case 'U':
               break
