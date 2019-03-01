@@ -22,20 +22,8 @@
                         <div class='buttons'></div>
                 </div>
                 <div id='tBody'>
-                    <script id='dataRow' type='template'>
-                        <div class='tr' index={{emp_no}}>
-                                <div class='tData'>{{birth_date}}</div>
-                                <div class='tData'>{{first_name}}</div>
-                                <div class='tData'>{{last_name}}</div>
-                                <div class='tData'>{{gender}}</div>
-                                <div class='tData'>{{hire_date}}</div>
-                                <div class='buttons'>
-                                    <input type='button' class='update notDisplay' value='U' />
-                                    <input type='button' class='edit' value='E' />
-                                    <input type='button' class='delete' value='X' />
-                                </div>
-                            </div>
-                    </script>
+                    
+                    
                 </div>
                 <div class='tr last'>
                     <div id='b_date' class='tData' contenteditable='true'></div>
@@ -49,5 +37,19 @@
                 </div>
             </div>
         </div>
+        <script id='dataRow' type='template'>
+            <div class='tr' index={{emp_no}}>
+                    <div class='tData'>{{birth_date}}</div>
+                    <div class='tData'>{{first_name}}</div>
+                    <div class='tData'>{{last_name}}</div>
+                    <div class='tData'>{{gender}}</div>
+                    <div class='tData'>{{hire_date}}</div>
+                    <div class='buttons'>
+                        <input type='button' class='update' value='U' />
+                        <input type='button' class='edit' value='E' />
+                        <input type='button' class='delete' value='X' />
+                    </div>
+                </div>
+        </script>
     </body>
 </html>

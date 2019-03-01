@@ -78,36 +78,75 @@ function formatDate(date) {
    return formattedDate;
 }
 
-function addPersonQuery(b_date,f_name,l_name,gender,h_date) {
-   var finalQuery = String.raw`INSERT INTO employees (birth_date,first_name,last_name,gender,hire_date) VALUES ('${b_date}','${f_name}','${l_name}','${gender}','${h_date}')`;
-   $.get( "http://localhost:8001/insert?query=" + finalQuery, function( data ) {
-      console.log(data);
-   });
-   loadEmployees()
+
+function searchPerson(b_date,f_name,l_name,gender,h_date){
+   var finalQuery = String.raw`SELECT * FROM employees WHERE birth_date = '${b_date}' AND first_name = '${f_name}' AND last_name = '${l_name}' AND gender = '${gender}' AND hire_date = '${h_date}'`;
+   $.get( "http://localhost:8001/query?a=" + finalQuery ).then(
+      (data)=>{
+         console.log("SEARCHPERSON (data)[0]:",JSON.parse(data)[0]);
+         console.log("SEARCHPERSON JSON.parse(data):",JSON.parse(data));
+         return (JSON.parse(data)[0]) 
+      },()=>{
+         return 0
+      }
+   );
 }
 
 function deletePersonQuery(emp_no){
    var finalQuery = String.raw`DELETE FROM employees WHERE emp_no = ${emp_no}`;
    $.get( "http://localhost:8001/insert?query=" + finalQuery, function( data ) {
       console.log(data);
+   }).then( 
+   ()=>{
+         $("#tBody").empty()
+         loadEmployees()
+   },()=>{
+      console.log("deleteperson: error")
    });
 }
 
-function loadEmployees(){
-   $.get( "http://localhost:8001/query", function( data ) {
-            let temp = $.trim($('#dataRow').html())
-            $.each(data, function(index, obj) {
-               var x = temp.replace(/{{emp_no}}/ig, obj.emp_no)
+function fillTemplate(obj){
+   let temp = $.trim($('#dataRow').html())
+   var x = temp.replace(/{{emp_no}}/ig, obj.emp_no)
                .replace(/{{birth_date}}/ig, formatDate(obj.birth_date))
                .replace(/{{first_name}}/ig, obj.first_name)
                .replace(/{{last_name}}/ig, obj.last_name)
                .replace(/{{gender}}/ig, obj.gender)
                .replace(/{{hire_date}}/ig, formatDate(obj.hire_date));
                $('#tBody').append(x);   
+}
+
+function loadEmployees(){
+   $.get( "http://localhost:8001/query?a=SELECT * FROM employees LIMIT 50", function( data ) {
+            $.each(data, function(index, obj) {
+               console.log(obj)
+               fillTemplate(obj)
             });    
 
          },"json");
    }
+
+function addPersonQuery(b_date,f_name,l_name,gender,h_date) {
+   var finalQuery = String.raw`INSERT INTO employees (birth_date,first_name,last_name,gender,hire_date) VALUES ('${b_date}','${f_name}','${l_name}','${gender}','${h_date}')`;
+   $.get( "http://localhost:8001/insert?query=" + finalQuery).then(
+      (data)=>{
+         console.log("Adddperson: ",data)
+         let varSearchPerson = searchPerson(b_date,f_name,l_name,gender,h_date)
+         console.log("VARSEARCH",searchPerson(b_date,f_name,l_name,gender,h_date))
+         // $.each(varSearchPerson, function(index, obj) {
+         //    console.log(obj)
+         //    fillTemplate(obj)
+         // });   
+         fillTemplate(searchPerson(b_date,f_name,l_name,gender,h_date))
+      },()=>{
+         console.log("addperson: error")
+         }
+   )
+}
+
+
+
+
 $(document).ready(function(){
    //Show employees
    $('.tab').on('click', function(event) {
@@ -141,12 +180,7 @@ $(document).ready(function(){
               break
           case 'X':
               let elem= $(this).parent().siblings().parent()
-              deletePersonQuery(elem.attr('index')).then(
-                 ()=>{
-                    
-                  loadEmployees()},
-                  (err)=>{console.log(err)}
-              )
+              deletePersonQuery(elem.attr('index'))
               break
           case 'U':
               break

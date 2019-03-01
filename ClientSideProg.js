@@ -15,7 +15,8 @@ rest.page("/", function() {
 
 //Declaring a page that returns something from a database
 //Will be accessed on localhost:8001/query
-rest.page("/query", function() {
+rest.page("/query", function(q) {
+    return q.a
     return "SELECT * FROM employees LIMIT 50"
 })
 
