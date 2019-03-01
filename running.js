@@ -142,7 +142,10 @@ $(document).ready(function(){
           case 'X':
               let elem= $(this).parent().siblings().parent()
               deletePersonQuery(elem.attr('index')).then(
-                 ()=>{loadEmployees()},(err)=>{console.log(err)}
+                 ()=>{
+                    
+                  loadEmployees()},
+                  (err)=>{console.log(err)}
               )
               break
           case 'U':
