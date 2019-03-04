@@ -44,8 +44,7 @@ function loadEmployees(){
    }
 
 function viewDepartments(){
-   
-   return $.get( "http://localhost:8001/query?a=SELECT * FROM `all_departments` ", function( data ) {
+   return $.get( "http://localhost:8001/query?a=SELECT * FROM all_departments ", function( data ) {
       var temp = $.trim($('#dataRowDep').html())
       $.each(data, function(index, obj) {
       var x = temp.replace(/{{emp_no}}/ig, obj.emp_no)
@@ -59,7 +58,23 @@ function viewDepartments(){
    },"json");
    }
 
-
+function viewDepartmentsEmployees(dept_name){
+   var finalQuery = String.raw`http://localhost:8001/query?a=SELECT * FROM all_departments WHERE dept_name = "${dept_name}"`
+   return $.get( finalQuery, function( data ) {
+      var temp = $.trim($('#dataRowDep').html())
+      $.each(data, function(index, obj) {
+      var x = temp.replace(/{{emp_no}}/ig, obj.emp_no)
+      .replace(/{{first_name}}/ig, obj.first_name)
+      .replace(/{{last_name}}/ig, obj.last_name)
+      .replace(/{{dep}}/ig, obj.dept_name)
+      .replace(/{{title}}/ig, obj.title)
+      .replace(/{{salary}}/ig, obj.salary)
+      $('#tBodyDept').append(x)
+   })
+   },"json");
+   }
+   
+   
 
 function addPersonQuery(b_date, f_name, l_name, gender, h_date) {
    var finalQuery = String.raw`INSERT INTO employees (birth_date,first_name,last_name,gender,hire_date) VALUES ('${b_date}','${f_name}','${l_name}','${gender}','${h_date}')`;
@@ -116,6 +131,7 @@ $(document).ready(function() {
             loadEmployees()
             break
          case 'departments':
+         $('#tBodyDept').empty()
             if ($('#side').hasClass('notDisplay')) {
                $('#side').removeClass('notDisplay')
             }
@@ -126,7 +142,6 @@ $(document).ready(function() {
                $('#depTable').removeClass('notDisplay')
             }
             viewDepartments()
-            
             break
          default: 
             break
@@ -227,5 +242,11 @@ $(document).ready(function() {
               break
       }
   })
+  //Sidemenu click
+   $('li').on('click', function(event) {
+      $('#tBodyDept').empty()
+      var dept_name = $(this).text()
+      viewDepartmentsEmployees(dept_name)
+   })
 
 })

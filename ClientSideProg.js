@@ -46,4 +46,7 @@ rest.page("/styling.css", function(q) {
 rest.page("/running.js", function(q) {
     return rest.file("running.js")
 })
+rest.page("/logo2.png", function(q) {
+    return rest.file("logo2.png")
+})
 rest.start(8001) //Initialize the server
