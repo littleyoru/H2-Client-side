@@ -135,7 +135,11 @@ $(document).ready(function() {
        //console.log('I clicked ', $(this)[0].value)
        switch(this.name) {
          case 'employees':
-            $('#table').toggleClass('notDisplay')
+            $('#tBody').empty()
+            if(($('#table').hasClass('notDisplay')))
+            {
+               $('#table').removeClass('notDisplay')
+            }
             loadEmployees()
             break
          case 'departments':
@@ -171,11 +175,20 @@ $(document).ready(function() {
       var l_name = $('#l_name').text();
       var gender = $('#gender').text();
       var h_date = $('#h_date').text();
-      addPersonQuery(b_date, f_name, l_name, gender, h_date).then(
+      addPersonQuery(b_date, f_name, l_name, gender, h_date).promise().then(
          (data) => {
-            console.log('data after add ', data)
-            let info = JSON.parse(data)[0]
-            fillTemplate(searchPerson(info.b_date, info.f_name, info.l_name, info.gender, info.h_date))
+            const result = searchPerson(b_date, f_name, l_name, gender, h_date)
+            result.promise().then(
+               (res) => {
+                  console.log('data after add ',res)
+                  let info = JSON.parse(res)[0]
+                  fillTemplate(info)
+               }
+            )
+            
+            // console.log('data after add ', searchPerson(info.b_date, info.f_name, info.l_name, info.gender, info.h_date))
+            // let info = JSON.parse(searchPerson(info.b_date, info.f_name, info.l_name, info.gender, info.h_date))[0]
+            // fillTemplate(info)
             // console.log("SEARCHPERSON (data)[0]:",JSON.parse(data)[0]);
             // console.log("SEARCHPERSON JSON.parse(data):",JSON.parse(data));
             }, () => {
