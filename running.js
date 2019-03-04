@@ -1,78 +1,3 @@
-let testObject = [  
-   {  
-      "emp_no":10004,
-      "birth_date":"1954-04-30T23:00:00.000Z",
-      "first_name":"Chirstian",
-      "last_name":"Koblick",
-      "gender":"M",
-      "hire_date":"1986-11-30T23:00:00.000Z"
-   },
-   {  
-      "emp_no":10017,
-      "birth_date":"1958-07-05T23:00:00.000Z",
-      "first_name":"Cristinel",
-      "last_name":"Bouloucos",
-      "gender":"F",
-      "hire_date":"1993-08-02T22:00:00.000Z"
-   },
-   {  
-      "emp_no":10067,
-      "birth_date":"1953-01-06T23:00:00.000Z",
-      "first_name":"Claudi",
-      "last_name":"Stavenow",
-      "gender":"M",
-      "hire_date":"1987-03-03T23:00:00.000Z"
-   },
-   {  
-      "emp_no":10068,
-      "birth_date":"1962-11-25T23:00:00.000Z",
-      "first_name":"Charlene",
-      "last_name":"Brattka",
-      "gender":"M",
-      "hire_date":"1987-08-06T22:00:00.000Z"
-   },
-   {  
-      "emp_no":10115,
-      "birth_date":"1964-12-24T23:00:00.000Z",
-      "first_name":"Chikara",
-      "last_name":"Rissland",
-      "gender":"M",
-      "hire_date":"1986-01-22T23:00:00.000Z"
-   },
-   {  
-      "emp_no":10146,
-      "birth_date":"1959-01-11T23:00:00.000Z",
-      "first_name":"Chenyi",
-      "last_name":"Syang",
-      "gender":"M",
-      "hire_date":"1988-06-27T22:00:00.000Z"
-   },
-   {  
-      "emp_no":10188,
-      "birth_date":"1956-07-12T23:00:00.000Z",
-      "first_name":"Christ",
-      "last_name":"Muchinsky",
-      "gender":"F",
-      "hire_date":"1987-08-26T22:00:00.000Z"
-   },
-   {  
-      "emp_no":10223,
-      "birth_date":"1963-09-16T23:00:00.000Z",
-      "first_name":"Carrsten",
-      "last_name":"Schmiedel",
-      "gender":"F",
-      "hire_date":"1985-11-17T23:00:00.000Z"
-   },
-   {  
-      "emp_no":10230,
-      "birth_date":"1955-09-10T23:00:00.000Z",
-      "first_name":"Clyde",
-      "last_name":"Vernadat",
-      "gender":"M",
-      "hire_date":"1996-06-15T22:00:00.000Z"
-   }
-]
-
 function formatDate(date) {
    formattedDate = date.substring(0, 10);
    return formattedDate;
@@ -118,6 +43,24 @@ function loadEmployees(){
          },"json");
    }
 
+function viewDepartments(){
+   
+   return $.get( "http://localhost:8001/query?a=SELECT * FROM `all_departments` ", function( data ) {
+      var temp = $.trim($('#dataRowDep').html())
+      $.each(data, function(index, obj) {
+      var x = temp.replace(/{{emp_no}}/ig, obj.emp_no)
+      .replace(/{{first_name}}/ig, obj.first_name)
+      .replace(/{{last_name}}/ig, obj.last_name)
+      .replace(/{{dep}}/ig, obj.dept_name)
+      .replace(/{{title}}/ig, obj.title)
+      .replace(/{{salary}}/ig, obj.salary)
+      $('#tBodyDept').append(x)
+   })
+   },"json");
+   }
+
+
+
 function addPersonQuery(b_date, f_name, l_name, gender, h_date) {
    var finalQuery = String.raw`INSERT INTO employees (birth_date,first_name,last_name,gender,hire_date) VALUES ('${b_date}','${f_name}','${l_name}','${gender}','${h_date}')`;
    return $.get( "http://localhost:8001/insert?query=" + finalQuery)
@@ -128,7 +71,10 @@ function updatePersonQuery(b_date, f_name, l_name, gender, h_date,emp_no) {
    return $.get( "http://localhost:8001/insert?query=" + finalQuery)
 }
 
-
+function updateDeptPersonQuery(emp_no,f_name, l_name,dept_name,title,salary) {
+var finalQuery = String.raw`UPDATE employees SET first_name = '${f_name}',last_name = '${l_name}',dept_name = '${dept_name}',title = '${title}',salary = '${salary}' WHERE emp_no = '${emp_no}'`;
+   return $.get( "http://localhost:8001/insert?query=" + finalQuery)
+}
 
 
 $(document).ready(function() {
@@ -151,19 +97,14 @@ $(document).ready(function() {
             if ($('#side').hasClass('notDisplay')) {
                $('#side').removeClass('notDisplay')
             }
-            if (!$('#depTable').hasClass('notDisplay')) {
-               $('#depTable').addClass('notDisplay')
+            if (!$('#table').hasClass('notDisplay')) {
+               $('#table').addClass('notDisplay')
             }
-            //$('#depTable').toggleClass('notDisplay')
-            var temp = $.trim($('#dataRowDep').html())
-            $.each(testMarketing, function(index, obj) {
-               var x = temp.replace(/{{emp_no}}/ig, obj.emp_no)
-               .replace(/{{first_name}}/ig, obj.first_name)
-               .replace(/{{last_name}}/ig, obj.last_name)
-               .replace(/{{title}}/ig, obj.title)
-               .replace(/{{salary}}/ig, obj.salary)
-               $('#tBodyDept').append(x)
-            })
+            if ($('#depTable').hasClass('notDisplay')) {
+               $('#depTable').removeClass('notDisplay')
+            }
+            viewDepartments()
+            
             break
          default: 
             break
@@ -206,13 +147,13 @@ $(document).ready(function() {
 
 
 
-   $('#tBody').on('click', 'input', function(event) {
+   $('#tBody, #tBodyDept').on('click', 'input', function(event) {
       event.stopPropagation()
       event.stopImmediatePropagation()
-
       switch($(this)[0].value) {
           case 'E':
               let siblings = $(this).parent().siblings()
+              console.log(siblings,$(this)[0].value)
               $.each(siblings, ((index, item) => {
                   $(item).attr('contenteditable', 'true')
               }))
@@ -229,20 +170,36 @@ $(document).ready(function() {
             let elem= $(this).parent().siblings()
             console.log('elem:',elem)
             console.log('elem0:',elem[0])
-            var b_date = $(elem[0]).text()
-            var f_name = $(elem[1]).text()
-            var l_name = $(elem[2]).text()
-            var gender = $(elem[3]).text()
-            var h_date = $(elem[4]).text()
-            var emp_no = elem.parent().attr('index')
-            updatePersonQuery(b_date,f_name,l_name,gender,h_date,emp_no).promise().then(
-               () => {
-                  $.each(elem, ((index, item) => {
-                     $(item).attr('contenteditable', 'false')
-                 }))
-               },()=> {console.log('error on update')}
-            )
-            
+            if($(elem).parent().parent().parent().attr('id') === 'table'){
+               var b_date = $(elem[0]).text()
+               var f_name = $(elem[1]).text()
+               var l_name = $(elem[2]).text()
+               var gender = $(elem[3]).text()
+               var h_date = $(elem[4]).text()
+               var emp_no = elem.parent().attr('index')
+               updatePersonQuery(b_date,f_name,l_name,gender,h_date,emp_no).promise().then(
+                  () => {
+                     $.each(elem, ((index, item) => {
+                        $(item).attr('contenteditable', 'false')
+                  }))
+                  },()=> {console.log('error on update')}
+               )
+            }else if($(elem).parent().parent().parent().attr('id') === 'depTable'){
+               var first_name = $(elem[0]).text()
+               var last_name = $(elem[1]).text()
+               var dept_name = $(elem[2]).text()
+               var title = $(elem[3]).text()
+               var salary = $(elem[4]).text()
+               var emp_no = elem.parent().attr('index')
+               updateDeptPersonQuery(emp_no,first_name,last_name,dept_name,title,salary).promise().then(
+                  () => {
+                     $.each(elem, ((index, item) => {
+                        $(item).attr('contenteditable', 'false')
+                     console.log('updatedept: ',item)
+                  }))
+                  },()=> {console.log('error on update')}
+               )
+            }
               break
           default: 
               break
