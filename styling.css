@@ -15,8 +15,23 @@ body {
     margin: 0 auto;
     font-size: 18px;
 }
+#logo {
+    display: inline-block;
+    background-color: #faebd7;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    padding: 10px;
+}
 h1 {
     text-align: center;
+    display: inline-block;
+    color: #008080;
+}
+img {
+    width: 30px;
+    height: auto;
+    display: inline-block;
 }
 #side {
     display: inline-block;

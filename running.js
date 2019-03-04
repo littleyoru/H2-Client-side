@@ -91,6 +91,13 @@ $(document).ready(function() {
             {
                $('#table').removeClass('notDisplay')
             }
+            if(!($('#depTable').hasClass('notDisplay')))
+            {
+               $('#depTable').addClass('notDisplay')
+            }
+            if (!$('#side').hasClass('notDisplay')) {
+               $('#side').addClass('notDisplay')
+            }
             loadEmployees()
             break
          case 'departments':
