@@ -123,6 +123,11 @@ function addPersonQuery(b_date, f_name, l_name, gender, h_date) {
    return $.get( "http://localhost:8001/insert?query=" + finalQuery)
 }
 
+function updatePersonQuery(b_date, f_name, l_name, gender, h_date,emp_no) {
+   var finalQuery = String.raw`UPDATE employees SET birth_date = '${b_date}',first_name = '${f_name}',last_name = '${l_name}',gender = '${gender}',hire_date = '${h_date}' WHERE emp_no = '${emp_no}'`;
+   return $.get( "http://localhost:8001/insert?query=" + finalQuery)
+}
+
 
 
 
@@ -196,6 +201,10 @@ $(document).ready(function() {
             }
       )
    })
+   //Update Employee
+
+
+
 
    $('#tBody').on('click', 'input', function(event) {
       event.stopPropagation()
@@ -211,12 +220,29 @@ $(document).ready(function() {
               $(this).siblings('.update').toggleClass('notDisplay')
               break
           case 'X':
-              let elem= $(this).parent().siblings().parent()
-              deletePersonQuery(elem.attr('index'))
+              let elem1= $(this).parent().siblings().parent()
+              deletePersonQuery(elem1.attr('index'))
               break
           case 'U':
             $(this).toggleClass('notDisplay')
             $(this).siblings('.edit').toggleClass('notDisplay')
+            let elem= $(this).parent().siblings()
+            console.log('elem:',elem)
+            console.log('elem0:',elem[0])
+            var b_date = $(elem[0]).text()
+            var f_name = $(elem[1]).text()
+            var l_name = $(elem[2]).text()
+            var gender = $(elem[3]).text()
+            var h_date = $(elem[4]).text()
+            var emp_no = elem.parent().attr('index')
+            updatePersonQuery(b_date,f_name,l_name,gender,h_date,emp_no).promise().then(
+               () => {
+                  $.each(elem, ((index, item) => {
+                     $(item).attr('contenteditable', 'false')
+                 }))
+               },()=> {console.log('error on update')}
+            )
+            
               break
           default: 
               break
