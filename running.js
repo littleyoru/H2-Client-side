@@ -78,6 +78,21 @@ var finalQuery = String.raw`UPDATE employees SET first_name = '${f_name}',last_n
 
 
 $(document).ready(function() {
+   //Home page
+   $('#logo').on('click', function(event) {
+      if(!$('#table').hasClass('notDisplay'))
+      {
+         $('#table').addClass('notDisplay')
+      }
+      if(!$('#depTable').hasClass('notDisplay'))
+      {
+         $('#depTable').addClass('notDisplay')
+      }
+      if (!$('#side').hasClass('notDisplay')) 
+      {
+         $('#side').addClass('notDisplay')
+      }
+   })
 
    //Show employees
    $('.tab').on('click', function(event) {
@@ -87,11 +102,11 @@ $(document).ready(function() {
        switch(this.name) {
          case 'employees':
             $('#tBody').empty()
-            if(($('#table').hasClass('notDisplay')))
+            if($('#table').hasClass('notDisplay'))
             {
                $('#table').removeClass('notDisplay')
             }
-            if(!($('#depTable').hasClass('notDisplay')))
+            if(!$('#depTable').hasClass('notDisplay'))
             {
                $('#depTable').addClass('notDisplay')
             }

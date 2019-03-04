@@ -15,13 +15,16 @@ body {
     margin: 0 auto;
     font-size: 18px;
 }
-#logo {
+#logoPic {
     display: inline-block;
     background-color: #faebd7;
     border-radius: 50%;
     width: 30px;
     height: 30px;
     padding: 10px;
+}
+#logo:hover {
+    cursor: pointer;
 }
 h1 {
     text-align: center;
