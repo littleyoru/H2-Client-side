@@ -7,49 +7,99 @@
     </head>
 
     <body>
-        <h1>CRUD</h1>
         <div id='wrapper'>
+            <h1>Clientside programmering</h1>
             <div id='menu'>
-                <input type='button' class='tab' value='Show Employees' />
+                <input type='button' class='tab' name='employees' value='Employees' />
+                <input type='button' class='tab' name='departments' value='Departments' />
+                <input type='button' class='tab' name='titles' value='Titles' />
+                <input type='button' class='tab' name='Salaries' value='Salaries' />
             </div>
-            <div id='table'>
-                <div class='tr head'>
-                        <div class='tHeader'>Birth Date</div>
+            <div id='container'>
+                <div id='side' class='notDisplay'>
+                    <li>Marketing</li>
+                    <li>Finance</li>
+                    <li>Human Resources</li>
+                    <li>Production</li>
+                    <li>Development</li>
+                    <li>Quality Management</li>
+                    <li>Sales</li>
+                    <li>Research</li>
+                    <li>Customer Service</li>
+                </div>
+                <div id='table' class='notDisplay'>
+                    <div class='tr head'>
+                            <div class='tHeader'>Birth Date</div>
+                            <div class='tHeader'>First Name</div>
+                            <div class='tHeader'>Last Name</div>
+                            <div class='tHeader'>Gender</div>
+                            <div class='tHeader'>Hire Date</div>
+                            <div class='buttons'></div>
+                    </div>
+                    <div id='tBody'>
+                    </div>
+                    <div class='tr last'>
+                        <div id='b_date' class='tData' contenteditable='true'></div>
+                        <div id='f_name' class='tData' contenteditable='true'></div>
+                        <div id='l_name' class='tData' contenteditable='true'></div>
+                        <div id='gender' class='tData' contenteditable='true'></div>
+                        <div id='h_date' class='tData' contenteditable='true'></div>
+                        <div class='buttons'>
+                            <input type='button' class='add' value='+' />
+                        </div>
+                    </div>
+                </div>
+                <div id='depTable' class='notDisplay'>
+                    <div class='tr head'>
                         <div class='tHeader'>First Name</div>
                         <div class='tHeader'>Last Name</div>
-                        <div class='tHeader'>Gender</div>
-                        <div class='tHeader'>Hire Date</div>
+                        <div class='tHeader'>Title</div>
+                        <div class='tHeader'>Salary</div>
                         <div class='buttons'></div>
-                </div>
-                <div id='tBody'>
-                    
-                    
-                </div>
-                <div class='tr last'>
-                    <div id='b_date' class='tData' contenteditable='true'></div>
-                    <div id='f_name' class='tData' contenteditable='true'></div>
-                    <div id='l_name' class='tData' contenteditable='true'></div>
-                    <div id='gender' class='tData' contenteditable='true'></div>
-                    <div id='h_date' class='tData' contenteditable='true'></div>
-                    <div class='buttons'>
-                        <input type='button' class='add' value='+' />
+                    </div>
+                    <div id='tBodyDept'></div>
+                    <div class='tr last'>
+                            <div id='f_name_dep' class='tData' contenteditable='true'></div>
+                            <div id='l_name_dep' class='tData' contenteditable='true'></div>
+                            <div id='title' class='tData' contenteditable='true'></div>
+                            <div id='salary' class='tData' contenteditable='true'></div>
+                            <div class='buttons'>
+                                <input type='button' class='add' value='+' />
+                            </div>
                     </div>
                 </div>
             </div>
+            
         </div>
+        
         <script id='dataRow' type='template'>
             <div class='tr' index={{emp_no}}>
-                    <div class='tData'>{{birth_date}}</div>
-                    <div class='tData'>{{first_name}}</div>
-                    <div class='tData'>{{last_name}}</div>
-                    <div class='tData'>{{gender}}</div>
-                    <div class='tData'>{{hire_date}}</div>
-                    <div class='buttons'>
-                        <input type='button' class='update' value='U' />
-                        <input type='button' class='edit' value='E' />
-                        <input type='button' class='delete' value='X' />
-                    </div>
+                <div class='tData'>{{birth_date}}</div>
+                <div class='tData'>{{first_name}}</div>
+                <div class='tData'>{{last_name}}</div>
+                <div class='tData'>{{gender}}</div>
+                <div class='tData'>{{hire_date}}</div>
+                <div class='buttons'>
+                    <input type='button' class='update' value='U' />
+                    <input type='button' class='edit' value='E' />
+                    <input type='button' class='delete' value='X' />
                 </div>
+            </div>
         </script>
+
+        <script id='dataRowDep' type='template'>
+            <div class='tr' index={{emp_no}}>
+                <div class='tData'>{{first_name}}</div>
+                <div class='tData'>{{last_name}}</div>
+                <div class='tData'>{{title}}</div>
+                <div class='tData'>{{salary}}</div>
+                <div class='buttons'>
+                    <input type='button' class='update' value='U' />
+                    <input type='button' class='edit' value='E' />
+                    <input type='button' class='delete' value='X' />
+                </div>
+            </div>
+        </script>
+
     </body>
 </html>

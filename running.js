@@ -79,17 +79,9 @@ function formatDate(date) {
 }
 
 
-function searchPerson(b_date,f_name,l_name,gender,h_date){
+function searchPerson(b_date, f_name, l_name, gender, h_date){
    var finalQuery = String.raw`SELECT * FROM employees WHERE birth_date = '${b_date}' AND first_name = '${f_name}' AND last_name = '${l_name}' AND gender = '${gender}' AND hire_date = '${h_date}'`;
-   $.get( "http://localhost:8001/query?a=" + finalQuery ).then(
-      (data)=>{
-         console.log("SEARCHPERSON (data)[0]:",JSON.parse(data)[0]);
-         console.log("SEARCHPERSON JSON.parse(data):",JSON.parse(data));
-         return (JSON.parse(data)[0]) 
-      },()=>{
-         return 0
-      }
-   );
+   return $.get( "http://localhost:8001/query?a=" + finalQuery )
 }
 
 function deletePersonQuery(emp_no){
@@ -126,35 +118,50 @@ function loadEmployees(){
          },"json");
    }
 
-function addPersonQuery(b_date,f_name,l_name,gender,h_date) {
+function addPersonQuery(b_date, f_name, l_name, gender, h_date) {
    var finalQuery = String.raw`INSERT INTO employees (birth_date,first_name,last_name,gender,hire_date) VALUES ('${b_date}','${f_name}','${l_name}','${gender}','${h_date}')`;
-   $.get( "http://localhost:8001/insert?query=" + finalQuery).then(
-      (data)=>{
-         console.log("Adddperson: ",data)
-         let varSearchPerson = searchPerson(b_date,f_name,l_name,gender,h_date)
-         console.log("VARSEARCH",searchPerson(b_date,f_name,l_name,gender,h_date))
-         // $.each(varSearchPerson, function(index, obj) {
-         //    console.log(obj)
-         //    fillTemplate(obj)
-         // });   
-         fillTemplate(searchPerson(b_date,f_name,l_name,gender,h_date))
-      },()=>{
-         console.log("addperson: error")
-         }
-   )
+   return $.get( "http://localhost:8001/insert?query=" + finalQuery)
 }
 
 
 
 
-$(document).ready(function(){
+$(document).ready(function() {
+
    //Show employees
    $('.tab').on('click', function(event) {
        event.stopPropagation()
        event.stopImmediatePropagation()
        //console.log('I clicked ', $(this)[0].value)
-       loadEmployees()
+       switch(this.name) {
+         case 'employees':
+            $('#table').toggleClass('notDisplay')
+            loadEmployees()
+            break
+         case 'departments':
+            if ($('#side').hasClass('notDisplay')) {
+               $('#side').removeClass('notDisplay')
+            }
+            if (!$('#depTable').hasClass('notDisplay')) {
+               $('#depTable').addClass('notDisplay')
+            }
+            //$('#depTable').toggleClass('notDisplay')
+            var temp = $.trim($('#dataRowDep').html())
+            $.each(testMarketing, function(index, obj) {
+               var x = temp.replace(/{{emp_no}}/ig, obj.emp_no)
+               .replace(/{{first_name}}/ig, obj.first_name)
+               .replace(/{{last_name}}/ig, obj.last_name)
+               .replace(/{{title}}/ig, obj.title)
+               .replace(/{{salary}}/ig, obj.salary)
+               $('#tBodyDept').append(x)
+            })
+            break
+         default: 
+            break
+         }
+      
    })
+
    //Add employee
    $('.add').on('click', function(event) {
       event.stopPropagation()
@@ -164,7 +171,17 @@ $(document).ready(function(){
       var l_name = $('#l_name').text();
       var gender = $('#gender').text();
       var h_date = $('#h_date').text();
-      addPersonQuery(b_date,f_name,l_name,gender,h_date)
+      addPersonQuery(b_date, f_name, l_name, gender, h_date).then(
+         (data) => {
+            console.log('data after add ', data)
+            let info = JSON.parse(data)[0]
+            fillTemplate(searchPerson(info.b_date, info.f_name, info.l_name, info.gender, info.h_date))
+            // console.log("SEARCHPERSON (data)[0]:",JSON.parse(data)[0]);
+            // console.log("SEARCHPERSON JSON.parse(data):",JSON.parse(data));
+            }, () => {
+               console.log("addperson: error")
+            }
+      )
    })
 
    $('#tBody').on('click', 'input', function(event) {
@@ -177,12 +194,16 @@ $(document).ready(function(){
               $.each(siblings, ((index, item) => {
                   $(item).attr('contenteditable', 'true')
               }))
+              $(this).toggleClass('notDisplay')
+              $(this).siblings('.update').toggleClass('notDisplay')
               break
           case 'X':
               let elem= $(this).parent().siblings().parent()
               deletePersonQuery(elem.attr('index'))
               break
           case 'U':
+            $(this).toggleClass('notDisplay')
+            $(this).siblings('.edit').toggleClass('notDisplay')
               break
           default: 
               break
